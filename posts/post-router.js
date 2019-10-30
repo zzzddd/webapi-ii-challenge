@@ -2,7 +2,7 @@ const express = require("express");
 
 const Posts = require("../data/db");
 const router = express.Router();
-
+// When the client makes a POST request to /api/posts:
 router.post("/", (req, res) => {
   if (!req.body.title || !req.body.contents) {
     res.status(400).json({
@@ -18,7 +18,7 @@ router.post("/", (req, res) => {
       );
   }
 });
-
+// When the client makes a POST request to /api/posts/:id/comments:
 router.post("/:id/comments", (req, res) => {
   const commentObj = { ...req.body, post_id: req.params.id };
 
@@ -53,6 +53,7 @@ router.post("/:id/comments", (req, res) => {
   }
 });
 
+// When the client makes a GET request to /api/posts:
 router.get("/", (req, res) => {
   Posts.find()
     .then(posts => res.status(200).json(posts))
@@ -63,6 +64,8 @@ router.get("/", (req, res) => {
     );
 });
 
+
+// When the client makes a GET request to /api/posts/:id:
 router.get("/:id", (req, res) => {
   Posts.findById(req.params.id)
     .then(post => {
@@ -81,6 +84,8 @@ router.get("/:id", (req, res) => {
     );
 });
 
+
+// When the client makes a GET request to /api/posts/:id/comments:
 router.get("/:id/comments", (req, res) => {
   Posts.findPostComments(req.params.id)
     .then(post => {
@@ -100,6 +105,8 @@ router.get("/:id/comments", (req, res) => {
     );
 });
 
+
+// When the client makes a DELETE request to /api/posts/:id:
 router.delete("/:id", (req, res) => {
   Posts.remove(req.params.id)
     .then(post => {
@@ -115,6 +122,8 @@ router.delete("/:id", (req, res) => {
       res.status(500).json({ error: "The post could not be removed." })
     );
 });
+
+// When the client makes a PUT request to /api/posts/:id:
 
 router.put("/:id", (req, res) => {
   if (!req.body.title || !req.body.contents) {
